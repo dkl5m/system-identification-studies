@@ -1,3 +1,4 @@
+%%
 % Exemplo 3.1
 % Conversao continua para discreta
 % Gp(s)=num(s)/den(s) -> Gp(z)=numz(z)/denz(z)
@@ -11,6 +12,7 @@ dstep(numz, denz)                   % resposta
 title('resposta a a sequencia unitaria');
 ylabel('saida'), xlabel('amostras)
 
+%%
 % Exemplo 3.2
 % Geracao ruido branco
 % media nula e variancia unitaria
