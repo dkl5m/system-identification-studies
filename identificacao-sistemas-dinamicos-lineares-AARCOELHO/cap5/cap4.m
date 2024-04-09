@@ -39,5 +39,27 @@ subplot(224), plot(t,b1(t)), title('b1'), xlabel('amostragem');
 
 %% Exemplo 5.4
 % Sequencia binaria pseudo-aleatoria
-clear all;
+clc; clear;
+
 delta = input('Intervalo de integracao delta t = ');
+tf = input('Tempo final tf = ');
+t = 0:delta:tf; sna=rand(size(t));l=0;
+
+while l==0
+    alfa=input('Valor de alfa = ');
+    if alfa<=1
+        if alfa>=0
+            l=1;
+        end
+    end
+    if l==0
+        disp('Alfa deve estar entre 0 e 1');
+    end
+end
+
+for i=1:length(t);
+    if sna(i)<=alfa, sbpa(i)=-1;
+    else sbpa(i)=1;
+    end
+end
+plot(t,sbpa);
