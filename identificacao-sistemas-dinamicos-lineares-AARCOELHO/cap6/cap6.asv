@@ -68,20 +68,5 @@ a2=0.5*([0 ui]+[ui 0]).*([ti 0] - [0 ti]);
 a2=sum(a2(1,2:length(ui)));
 k = a1/a2
 arm=d0;
-for t=aux1:aux2
-    if yr(t)>=arm
-        arm=yr(t); end
-end
-Au=arm;
-arm=d0;
-for t=aux1:aux2
-    if yr(t)<=arm
-        arm=yr(t); end
-end
-Ad=arm;
-teta=log(((d1-d0)*K-eps+eps0)/((d1-d0)*K+Ad));
-x1=(d1+d2)*K*exp(teta-(d1-d0)*K+eps-eps0);
-x1=(d1+d2)*K-eps-eps0;
-tau1=Tu1/log(x1/x2);
-teta1=tau1*teta
+for t=aux1:aux
 
