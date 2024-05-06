@@ -80,8 +80,8 @@ for t=aux1:aux2
 end
 Ad=arm;
 teta=log(((d1-d0)*K-eps+eps0)/((d1-d0)*K+Ad));
-x1=(d1+d2)*K*exp(teta-(d1-d0)*K+eps-eps0);
-x1=(d1+d2)*K-eps-eps0;
+x1=(d1+d2)*K*exp(teta)-(d1-d0)*K+eps-eps0;
+x2=(d1+d2)*K-eps-eps0;
 tau1=Tu1/log(x1/x2);
 teta1=tau1*teta
 
