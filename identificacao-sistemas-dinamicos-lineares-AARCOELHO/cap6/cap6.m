@@ -5,20 +5,19 @@
 close all; clear; clc;
 
 Tamostra=1;npts=100;d=0.5;eps=0.0870;
-u(t)=zeros(1,7);e(t)=zeros(1,7);y(t)=zeros(1,7);tempo(t)=zeros(1,7);
 for t=1:7
     u(t)=-d;e(t)=0;y(t)=0;tempo(t)=t*Tamostra;
 end
-for t=5:npts                            % experimenatacao com rele
+for t=5:npts                            % experimentacao com rele
     y(t)=1.436*y(t-1)-0.5134*y(t-2)+...
         0.04286*u(t-2)+0.03431*u(t-3);
     e(t)=-y(t);
     if((abs(e(t))>eps)&&(e(t)>0)); u(t)=+d; end
     if((abs(e(t))>eps)&&(e(t)<0)); u(t)=-d; end
-    if((abs(e(t))>eps)&&(u(t-1)==+d)); u(t)=+d; end
-    if((abs(e(t))>eps)&&(u(t-1)==-d)); u(t)=-d; end
+    if((abs(e(t))<eps)&&(u(t-1)==+d)); u(t)=+d; end
+    if((abs(e(t))<eps)&&(u(t-1)==-d)); u(t)=-d; end
     if(e(t)==+eps); u(t+1)=+d; end
-    if(e(t)==-eps); u(t-1)=-d; end
+    if(e(t)==-eps); u(t+1)=-d; end
     tempo(t)=t*Tamostra;
 end
 ch=0;i=1;
@@ -51,13 +50,13 @@ close all; clear; clc;
 d0=2;d1=0.5;d2=0.5;eps0=2;eps=0.3;nptos=80;Tamostra=0.1;
 nptos1=nptos/Tamostra;kont=0;
 for t=2:nptos1
-    if(ur(t)~=ur(t-1))
+    if ur(t)~=ur(t-1)
         kont=kont+1;ch(kont)=t;
     end
 end
 Tu1=(ch(6)-ch(5))*Tamostra; Tu2=(ch(5)-ch(4))*Tamostra;
 aux1=ch(3);aux2=ch(5);i=0;
-for t=aux1:aux2;
+for t=aux1:aux2
     i=i+1;
     yi(i)=yr(t);ui(i)=ur(t);
     ti(i)=i*Tamostra;
@@ -81,7 +80,7 @@ end
 Ad=arm;
 teta=log(((d1-d0)*K-eps+eps0)/((d1-d0)*K+Ad));
 x1=(d1+d2)*K*exp(teta)-(d1-d0)*K+eps-eps0;
-x2=(d1+d2)*K-eps-eps0;
+x2=(d0+d2)*K-eps-eps0;
 tau1=Tu1/log(x1/x2);
 teta1=tau1*teta
 
