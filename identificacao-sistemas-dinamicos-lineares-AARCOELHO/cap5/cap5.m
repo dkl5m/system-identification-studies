@@ -1,3 +1,40 @@
+%% Exemplo 5.1
+% Estimador dos mínimos quadrados não-recursivo
+% Processo de segunda ordem
+
+load exchanger.dat
+%t=exchanger(100:500,1);
+u=exchanger(100:500,2);
+y=exchanger(100:500,3);
+
+N=length(u);
+Y=[];fi=[];
+for j=1:N
+  if j<=2
+     y1=0;y2=0;u1=0;u2=0;
+  else
+      y1=y(j-1);y2=y(j-2);u1=u(j-1);u2=u(j-2);
+  end   
+  Y=[Y; y(j)];fi=[fi;-y1 -y2 u1 u2]; 
+end
+teta=inv(fi'*fi)*fi'*Y; 
+for k=1:2
+    yest(k)=0;
+end
+a1=teta(1);a2=teta(2);b1=teta(3);b2=teta(4);
+for k=3:N
+    yest(k)=-a1*yest(k-1)-a2*yest(k-2)+b1*u(k-1)+b2*u(k-2);
+end
+
+plot(y,'g');
+hold on
+plot(yest,'r');
+
+ye=fi*teta;
+hold on;
+plot(ye,'b');
+
+
 %% Exemplo 5.3
 % Estimador dos minimos quadrados recursivo
 % Planta de segunda ordem
