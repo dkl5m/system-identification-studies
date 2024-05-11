@@ -35,6 +35,36 @@ hold on;
 plot(ye,'b');
 
 
+%% Estimador dos mínimos quadrados não-recursivo
+% Exemplo 5.2
+
+%Dados de entrada e saída:
+
+t=0:14;
+u=zeros(15,1);
+u(1)=1;u(2:6)=0.8:-0.2:0;u(7:11)=0.2:0.2:1;u(12:15)=u(2:5);
+y=zeros(15,1);
+y(1)=0.9;y(2)=2.5;y(3)=2.4;y(4)=1.3;y(5)=1.2;y(6)=0.8;y(7)=0;
+y(8)=0.9;y(9)=1.4;y(10)=1.9;y(11)=2.3;y(12)=2.4;y(13)=2.3;
+y(14)=1.3;y(15)=1.2;
+
+N=input('Escolha N:');
+
+Y=[y(2)];fi=[u(2) u(1)];
+
+for k=3:N+1;
+    
+    fi=[fi;u(k) u(k-1)];
+    Y=[Y;y(k)];
+end
+
+teta=inv(fi'*fi)*fi'*Y
+
+b0=teta(1)
+b1=teta(2)
+
+
+
 %% Exemplo 5.3
 % Estimador dos minimos quadrados recursivo
 % Planta de segunda ordem
