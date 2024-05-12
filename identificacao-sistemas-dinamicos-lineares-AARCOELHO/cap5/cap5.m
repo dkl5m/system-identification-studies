@@ -213,3 +213,151 @@ subplot(221), plot(t,a1(t)), title('a1'), xlabel('amostragem');
 subplot(222), plot(t,a2(t)), title('a2'), xlabel('amostragem');
 subplot(223), plot(t,b0(t)), title('b0'), xlabel('amostragem');
 subplot(224), plot(t,b1(t)), title('b1'), xlabel('amostragem');
+
+
+%%
+% Coelho Ch 5
+% MQR com random walk
+% Exemplo 5.7
+
+N=801;
+
+u=zeros(N,1);
+for k=1:N;
+    
+    if rand>0.5;
+        u(k)=1;
+    else
+        u(k)=-1;
+    end
+end
+
+e=0.01*u;
+
+% e=zeros(N,1);
+% for k=1:N;
+%     
+%     if rand>0.5;
+%         e(k)=0.01;
+%     else
+%         e(k)=-0.01;
+%     end
+% end
+
+
+y=zeros(N,1);
+p=100*eye(3); teta=[0;0;0];
+a1=zeros(N,1); b0=zeros(N,1); b1=zeros(N,1);
+erro=zeros(N,1);
+
+Q=0.1*eye(3);
+% Q=10*eye(3);
+
+for n=3:N;
+    
+    if n>=201;
+        au=0.35;
+    else
+        au=0.7;
+    end
+        
+    y(n)=-au*y(n-1)+u(n-1)+0.5*u(n-2)+e(n);
+    
+    fi=[-y(n-1);u(n-1);u(n-2)];
+    erro(n)=y(n)-fi'*teta;
+   
+    k=p*fi/(1+fi'*p*fi);
+    teta=teta+k*erro(n);
+    p=(p-k*fi'*p); 
+     
+    if n==201;              % random walk
+    p=p+Q;
+    end    
+    
+    a1(n)=teta(1); b0(n)=teta(2); b1(n)=teta(3);
+end
+
+t=0:N-1;
+aum=0.7*ones(N,1);aum(201:N,1)=0.35*ones(601,1);
+bz=ones(N,1); bum=0.5*ones(N,1);
+
+subplot(311);
+plot(t,a1,t,aum,'--');
+title('a1');
+xlabel('tempo');
+
+subplot(312);
+plot(t,b0,t,bz,'--');
+title('b0');
+xlabel('tempo');
+
+subplot(313);
+plot(t,b1,t,bum,'--');
+title('b1');
+xlabel('tempo');
+
+
+%%
+% Exemplo Coelho 5.8
+
+N=801;
+
+u=zeros(N,1);
+
+for n=1:N
+  
+  if rand>0.5;
+    u(n)=1;
+  else
+    u(n)=-1;
+  end
+ end
+e=0.01*u;  teta=[0;0;0];
+a1=zeros(N,1);a2=zeros(N,1);b0=zeros(N,1);
+y=zeros(N,1);
+
+fi=[0;0;0];
+p=100*eye(3);
+%lambda=0.99;
+lambda=0.97;
+
+for k=3:N;
+  
+  if k<201;
+    b=1;
+  else
+    b=2;
+  
+  end  
+  y(k)=-y(k-1)-0.25*y(k-2)+b*u(k-1)+e(k);
+
+  fi=[-y(k-1);-y(k-2);u(k-1)];
+  erro(k)=y(k)-fi'*teta;
+  K=p*fi/(lambda+fi'*p*fi);
+  teta=teta+K*erro(k);
+  p=(p-K*fi'*p')/lambda;
+  
+  a1(k)=teta(1); a2(k)=teta(2); b0(k)=teta(3);
+
+end
+t=1:N; t=t';
+au=ones(N,1); ad=0.25*ones(N,1);
+b=ones(N,1);b(201:N)=2;
+
+figure 1;
+plot(t,a1);
+hold on
+plot(t,au,'r--');
+title('a1'); xlabel('Amostras');
+
+figure 2;
+plot(t,a2);
+hold on
+plot(t,ad,'r--');
+title('a2'); xlabel('Amostras');
+
+figure 3;
+plot(t,b0);
+hold on
+plot(t,b,'r--');
+title('b0'); xlabel('Amostras');                                                                                                                                 
