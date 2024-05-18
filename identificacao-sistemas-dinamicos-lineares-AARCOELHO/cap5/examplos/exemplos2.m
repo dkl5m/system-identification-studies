@@ -38,10 +38,10 @@ subplot(222),plot(t,a2(t)),title('a2'),xlabel('amostragem');
 subplot(223),plot(t,b0(t)),title('b0'),xlabel('amostragem');
 subplot(224),plot(t,b1(t)),title('b1'),xlabel('amostragem');
 
-% figure (2)
-% 
-% subplot(211),plot(t,c1(t)),title('c1'),xlabel('amostragem');
-% subplot(212),plot(t,c2(t)),title('c2'),xlabel('amostragem');
+figure (2)
+
+subplot(211),plot(t,c1(t)),title('c1'),xlabel('amostragem');
+subplot(212),plot(t,c2(t)),title('c2'),xlabel('amostragem');
 
 %%
 %Cálculo de teta
@@ -92,5 +92,6 @@ end
 tetaest=inv(fi'*fi)*fi'*Y;
 yest=fi*tetaest;
 e=(y-yest);
-J=e'*e,
-R2=1-((y-yest)'*(y-yest))/((y-mean(y))'*(y-mean(y))),
+J=e'*e;
+R2=1-((y-yest)'*(y-yest))/((y-mean(y))'*(y-mean(y)));
+fprintf('J:%f and R2:%f', J, R2);

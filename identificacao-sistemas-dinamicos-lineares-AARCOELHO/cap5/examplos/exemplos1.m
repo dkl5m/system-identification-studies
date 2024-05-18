@@ -1,6 +1,7 @@
 %% Exemplo 5.1
 % Estimador dos mínimos quadrados não-recursivo
 % Processo de segunda ordem
+close all; clear; clc;
 
 load exchanger.dat
 %t=exchanger(100:500,1);
@@ -35,11 +36,11 @@ hold on;
 plot(ye,'b');
 
 
-%% Estimador dos mínimos quadrados não-recursivo
-% Exemplo 5.2
+%% Exemplo 5.2
+% Estimador dos mínimos quadrados não-recursivo
+close all; clear; clc;
 
 %Dados de entrada e saída:
-
 t=0:14;
 u=zeros(15,1);
 u(1)=1;u(2:6)=0.8:-0.2:0;u(7:11)=0.2:0.2:1;u(12:15)=u(2:5);
@@ -68,7 +69,7 @@ b1=teta(2)
 %% Exemplo 5.3
 % Estimador dos minimos quadrados recursivo
 % Planta de segunda ordem
-clear; clc;
+close all; clear; clc;
 
 nit = input(' Quantas iteracoes? ');
 % u(i) = 0.1;
@@ -106,7 +107,7 @@ subplot(224), plot(t,b1(t)), title('b1'), xlabel('amostragem');
 
 %% Exemplo 5.4
 % Sequencia binaria pseudo-aleatoria
-clc; clear;
+close all; clear; clc;
 
 delta = input('Intervalo de integracao delta t = ');
 tf = input('Tempo final tf = ');
@@ -134,7 +135,7 @@ plot(t,sbpa);
 %% Exemplo 5.5
 % Estimador da variavel instrumental
 % Planta de segunda ordem
-clear; clc;
+close all; clear; clc;
 
 nit = input(' Quantas iteracoes? ');
 % u(i) = 0;
@@ -174,7 +175,7 @@ subplot(224), plot(t,b1(t)), title('b1'), xlabel('amostragem');
 
 %% Exemplo 5.6
 % Estimador da matriz estendida
-clear; clc;
+close all; clear; clc;
 
 nit = input(' Quantas iteracoes? ');
 % u(i) = 0;
@@ -215,10 +216,9 @@ subplot(223), plot(t,b0(t)), title('b0'), xlabel('amostragem');
 subplot(224), plot(t,b1(t)), title('b1'), xlabel('amostragem');
 
 
-%%
-% Coelho Ch 5
+%% Exemplo 5.7
 % MQR com random walk
-% Exemplo 5.7
+close all; clear; clc;
 
 N=801;
 
@@ -297,8 +297,8 @@ title('b1');
 xlabel('tempo');
 
 
-%%
-% Exemplo Coelho 5.8
+%% Exemplo Coelho 5.8
+close all; clear; clc;
 
 N=801;
 
@@ -344,20 +344,73 @@ t=1:N; t=t';
 au=ones(N,1); ad=0.25*ones(N,1);
 b=ones(N,1);b(201:N)=2;
 
-figure 1;
 plot(t,a1);
 hold on
 plot(t,au,'r--');
 title('a1'); xlabel('Amostras');
 
-figure 2;
+figure
 plot(t,a2);
 hold on
 plot(t,ad,'r--');
 title('a2'); xlabel('Amostras');
 
-figure 3;
+figure (2)
 plot(t,b0);
 hold on
 plot(t,b,'r--');
-title('b0'); xlabel('Amostras');                                                                                                                                 
+title('b0'); xlabel('Amostras');
+
+%% Exemplo 5.9
+% Estimador dos minimos quadrados recursivo
+close all; clear; clc;
+
+N=801;
+
+u=zeros(N,1);
+
+for n=1:N
+  
+  if rand>0.5;
+    u(n)=1;
+  else
+    u(n)=-1;
+  end
+ end
+e=0.01*u;  teta=[0;0];
+a1=zeros(N,1);a2=zeros(N,1);
+%b0=zeros(N,1);
+y=zeros(N,1);
+
+fi=[0;0];
+p=100*eye(2);
+%lambda=0.99;
+lambda=0.95;
+
+for k=2:N;
+  
+  if k<201;
+    b=1;
+  else
+    b=2;
+  
+  end  
+  y(k)=0.6*y(k-1)+e(k)+0.4*e(k-1);
+
+  fi=[-y(k-1);u(k-1)];
+  erro(k)=y(k)-fi'*teta;
+  K=p*fi/(lambda+fi'*p*fi);
+  teta=teta+K*erro(k);
+  p=(p-K*fi'*p')/lambda;
+  
+  a1(k)=teta(1); a2(k)=teta(2);
+
+end
+t=1:N; t=t';
+au=0.6*ones(N,1); ad=0.4*ones(N,1);
+b=ones(N,1);b(201:N)=2;
+
+plot(t,a1);
+hold on
+plot(t,au,'r--');
+title('a1'); xlabel('Amostras');
