@@ -18,4 +18,7 @@ eps2=1;                     % histerese
 d0 = 0;
 eps0 = 0;
 
-sim("c6q1.slx")
+% SIMULACAO SIMULINK
+mdl     = "c6problem1simulation";
+open_system(mdl)
+sim("c6problem1simulation")
